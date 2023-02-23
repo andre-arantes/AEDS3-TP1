@@ -24,9 +24,7 @@ class Imdb {
         this.director = null;
     }
 
-    public Imdb(int ranking, String name, int year, String runtime, String[] genre, float rating, String director) {// Construtor
-                                                                                                                 // sem
-                                                                                                                 // parametros
+    public Imdb(int ranking, String name, int year, String runtime, String[] genre, float rating, String director) {// Construtor sem parametros
         this.ranking = ranking;
         this.name = name;
         this.year = year;
