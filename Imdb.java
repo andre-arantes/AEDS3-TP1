@@ -12,7 +12,7 @@ class Imdb {
     private float rating;
     private String director;
 
-    // ------------ Construtores ------------
+    // ------------ Construtores ---------------
 
     public Imdb() { // Construtor padrão
         this.ranking = -1;
