@@ -7,7 +7,7 @@ class Imdb {
     private int ranking;
     private String name;
     private int year;
-    private int runtime;
+    private String runtime;
     private String[] genre;
     private float rating;
     private String director;
@@ -18,13 +18,13 @@ class Imdb {
         this.ranking = -1;
         this.name = null;
         this.year = 0;
-        this.runtime = 0;
+        this.runtime = null;
         this.genre = new String[1000];
         this.rating = 0F;
         this.director = null;
     }
 
-    public Imdb(int ranking, String name, int year, int runtime, String[] genre, float rating, String director) {// Construtor
+    public Imdb(int ranking, String name, int year, String runtime, String[] genre, float rating, String director) {// Construtor
                                                                                                                  // sem
                                                                                                                  // parametros
         this.ranking = ranking;
@@ -65,11 +65,11 @@ class Imdb {
     }
 
     // Runtime
-    public int getRuntime() {
+    public String getRuntime() {
         return runtime;
     }
 
-    public void setRuntime(int runtime) {
+    public void setRuntime(String runtime) {
         this.runtime = runtime;
     }
 
@@ -109,7 +109,7 @@ class Imdb {
         dos.writeInt(this.getRanking()); // Escreve o ranking(id) no array de bytes
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes
-        dos.writeInt(this.getRuntime());// Escreve o runtime no array de bytes
+        dos.writeUTF(this.getRuntime());// Escreve o runtime no array de bytes
         for (int i = 0; i < 1000; i++) {
             dos.writeUTF((this.getGenre()[i]));// Escreve o array de genre no array de bytes
         }
@@ -130,7 +130,7 @@ class Imdb {
         this.ranking = dis.readInt(); // Le o ranking do array de bytes
         this.name = dis.readUTF();// Le o name do array de bytes
         this.year = dis.readInt();// Le o year do array de bytes
-        this.runtime = dis.readInt();// Le o runtime do array de bytes
+        this.runtime = dis.readUTF();// Le o runtime do array de bytes
         for (int i = 0; i < 1000; i++) {
             this.genre[i] = dis.readUTF();// Le o array de genre do array de bytes
         }
