@@ -4,6 +4,8 @@ class Imdb {
 
     // ------------ Atributos ------------
 
+    private static int size;
+    private int id;
     private int ranking;
     private String name;
     private int year;
@@ -15,16 +17,19 @@ class Imdb {
     // ------------ Construtores ---------------
 
     public Imdb() { // Construtor padrão
+        this.id = 0;
         this.ranking = -1;
         this.name = null;
-        this.year = 0;
+        this.year = -1;
         this.runtime = null;
         this.genre = new String[1000];
         this.rating = 0F;
         this.director = null;
     }
 
-    public Imdb(int ranking, String name, int year, String runtime, String[] genre, float rating, String director) {// Construtor sem parametros
+    public Imdb(int id, int ranking, String name, int year, String runtime, String[] genre, float rating,
+            String director) {
+        this.id = size++;
         this.ranking = ranking;
         this.name = name;
         this.year = year;
@@ -35,6 +40,15 @@ class Imdb {
     }
 
     // ------------ Getters e Setters ------------//
+    // Id
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId() {
+        this.id = size;
+    }
+
     // Ranking
     public int getRanking() {
         return ranking;
@@ -101,9 +115,9 @@ class Imdb {
     // ------------ Métodos ------------
     public byte[] toByteArray() throws IOException { // Converte objeto para um fluxo de bytes
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array dde bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array de bytes
         DataOutputStream dos = new DataOutputStream(baos); // Cria um fluxo de dados
-
+        dos.writeInt(this.getId());
         dos.writeInt(this.getRanking()); // Escreve o ranking(id) no array de bytes
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes

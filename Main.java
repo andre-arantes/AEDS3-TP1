@@ -1,11 +1,16 @@
-// import java.io.*;
+
+import java.io.*;
+// import java.io.FileNotFoundException;    
+import java.io.RandomAccessFile;
 import java.util.*;
 
 class Main {
-    public static void main(String[] args) {
-
-        // RandomAccessFile raf = new RandomAccessFile("db/imdb.csv", "rw");
+    public static void main(String[] args) throws IOException {
+        RandomAccessFile raf = new RandomAccessFile("db/movies.db", "rw");
         Scanner sc = new Scanner(System.in);
+        if (raf.length() == 0)
+            raf.write(0); 
+        raf.seek(0); // Volta para o inicio do arquivo
         boolean loop = true;
         int opcao = 0;
         while (loop) {
