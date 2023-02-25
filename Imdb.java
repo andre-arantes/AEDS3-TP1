@@ -10,7 +10,7 @@ class Imdb {
     private String name;
     private int year;
     private String runtime;
-    private String[] genre;
+    private String genre;
     private float rating;
     private String director;
 
@@ -22,12 +22,12 @@ class Imdb {
         this.name = null;
         this.year = -1;
         this.runtime = null;
-        this.genre = new String[1000];
+        this.genre = null;
         this.rating = 0F;
         this.director = null;
     }
 
-    public Imdb(int id, int ranking, String name, int year, String runtime, String[] genre, float rating,
+    public Imdb(int id, int ranking, String name, int year, String runtime, String genre, float rating,
             String director) {
         this.id = size++;
         this.ranking = ranking;
@@ -86,11 +86,11 @@ class Imdb {
     }
 
     // Genre
-    public String[] getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String[] genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 
@@ -122,9 +122,9 @@ class Imdb {
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes
         dos.writeUTF(this.getRuntime());// Escreve o runtime no array de bytes
-        for (int i = 0; i < 1000; i++) {
-            dos.writeUTF((this.getGenre()[i]));// Escreve o array de genre no array de bytes
-        }
+
+        dos.writeUTF((this.getGenre()));// Escreve o array de genre no array de bytes
+
         dos.writeFloat(this.getRating());// Escreve o rating no array de bytes
         dos.writeUTF(this.getDirector());// Escreve o director no array de bytes
 
@@ -143,9 +143,7 @@ class Imdb {
         this.name = dis.readUTF();// Le o name do array de bytes
         this.year = dis.readInt();// Le o year do array de bytes
         this.runtime = dis.readUTF();// Le o runtime do array de bytes
-        for (int i = 0; i < 1000; i++) {
-            this.genre[i] = dis.readUTF();// Le o array de genre do array de bytes
-        }
+        this.genre = dis.readUTF();// Le o array de genre do array de bytes
         this.rating = dis.readFloat();// Le o rating do array de bytes
         this.director = dis.readUTF();// Le o director do array de bytes
     }
