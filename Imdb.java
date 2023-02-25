@@ -4,27 +4,32 @@ class Imdb {
 
     // ------------ Atributos ------------
 
+    private static int size;
+    private int id;
     private int ranking;
     private String name;
     private int year;
     private String runtime;
-    private String[] genre;
+    private String genre;
     private float rating;
     private String director;
 
     // ------------ Construtores ---------------
 
     public Imdb() { // Construtor padrão
+        this.id = 0;
         this.ranking = -1;
         this.name = null;
-        this.year = 0;
+        this.year = -1;
         this.runtime = null;
-        this.genre = new String[1000];
+        this.genre = null;
         this.rating = 0F;
         this.director = null;
     }
 
-    public Imdb(int ranking, String name, int year, String runtime, String[] genre, float rating, String director) {// Construtor sem parametros
+    public Imdb(int id, int ranking, String name, int year, String runtime, String genre, float rating,
+            String director) {
+        this.id = size++;
         this.ranking = ranking;
         this.name = name;
         this.year = year;
@@ -35,6 +40,15 @@ class Imdb {
     }
 
     // ------------ Getters e Setters ------------//
+    // Id
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId() {
+        this.id = size;
+    }
+
     // Ranking
     public int getRanking() {
         return ranking;
@@ -72,11 +86,11 @@ class Imdb {
     }
 
     // Genre
-    public String[] getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(String[] genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 
@@ -101,16 +115,16 @@ class Imdb {
     // ------------ Métodos ------------
     public byte[] toByteArray() throws IOException { // Converte objeto para um fluxo de bytes
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array dde bytes
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array de bytes
         DataOutputStream dos = new DataOutputStream(baos); // Cria um fluxo de dados
-
+        dos.writeInt(this.getId());
         dos.writeInt(this.getRanking()); // Escreve o ranking(id) no array de bytes
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes
         dos.writeUTF(this.getRuntime());// Escreve o runtime no array de bytes
-        for (int i = 0; i < 1000; i++) {
-            dos.writeUTF((this.getGenre()[i]));// Escreve o array de genre no array de bytes
-        }
+
+        dos.writeUTF((this.getGenre()));// Escreve o array de genre no array de bytes
+
         dos.writeFloat(this.getRating());// Escreve o rating no array de bytes
         dos.writeUTF(this.getDirector());// Escreve o director no array de bytes
 
@@ -129,9 +143,7 @@ class Imdb {
         this.name = dis.readUTF();// Le o name do array de bytes
         this.year = dis.readInt();// Le o year do array de bytes
         this.runtime = dis.readUTF();// Le o runtime do array de bytes
-        for (int i = 0; i < 1000; i++) {
-            this.genre[i] = dis.readUTF();// Le o array de genre do array de bytes
-        }
+        this.genre = dis.readUTF();// Le o array de genre do array de bytes
         this.rating = dis.readFloat();// Le o rating do array de bytes
         this.director = dis.readUTF();// Le o director do array de bytes
     }
