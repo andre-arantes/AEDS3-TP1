@@ -22,14 +22,14 @@ class Programa {
                 filePointer = write(imdb, filePointer);
 
                 line = br.readLine();
-                System.out.println(imdb.getRanking());
+                // System.out.println(imdb.getName());
             }
             br.close();
         }
     }
 
     public static long write(Imdb imdb, Long filePointer) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
 
         Long position = filePointer;
         byte[] ba;
@@ -43,9 +43,9 @@ class Programa {
         } else {
             raf.seek(0); //
             int ranking = raf.readInt();
-            ranking++;
             raf.seek(0);
             raf.writeInt(ranking);
+            ranking++;
             raf.seek(position);
             raf.writeBoolean(false); // lapide
             ba = imdb.toByteArray();
@@ -59,7 +59,7 @@ class Programa {
     }
 
     public static void read() throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
 
         raf.seek(0);
         System.out.println("Numero de filmes:" + raf.readInt());
@@ -67,9 +67,8 @@ class Programa {
 
         long currentPosition = raf.getFilePointer();
         long endPosition = raf.length();
-        // System.out.println(raf.length());
         int len;
-        byte ba[];
+        byte[] ba;
         Imdb imdb = new Imdb();
 
         while (currentPosition < endPosition) {
@@ -77,12 +76,12 @@ class Programa {
             len = raf.readInt();
             ba = new byte[len];
             raf.read(ba);
-            System.out.println(raf.read(ba));
             imdb.fromByteArray(ba);
             System.out.println(imdb);
             System.out.println();
             currentPosition = raf.getFilePointer();
         }
+
         raf.close();
     }
 

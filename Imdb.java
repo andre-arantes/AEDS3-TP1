@@ -113,11 +113,24 @@ class Imdb {
     }
 
     // ------------ Métodos ------------
+
+    public String toString() {
+        return "{" +
+                " ranking='" + getRanking() + "'" +
+                ", name='" + getName() + "'" +
+                ", year='" + getYear() + "'" +
+                ", runtime='" + getRuntime() + "'" +
+                ", genre='" + getGenre() + "'" +
+                ", rating='" + getRating() + "'" +
+                ", director='" + getDirector() + "'" +
+                "}";
+    }
+
     public byte[] toByteArray() throws IOException { // Converte objeto para um fluxo de bytes
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array de bytes
         DataOutputStream dos = new DataOutputStream(baos); // Cria um fluxo de dados
-        dos.writeInt(this.getId());
+        // dos.writeInt(this.getId());
         dos.writeInt(this.getRanking()); // Escreve o ranking(id) no array de bytes
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes
@@ -138,7 +151,7 @@ class Imdb {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(ba);
         DataInputStream dis = new DataInputStream(bais);
-
+        // this.id = dis.readInt();
         this.ranking = dis.readInt(); // Le o ranking do array de bytes
         this.name = dis.readUTF();// Le o name do array de bytes
         this.year = dis.readInt();// Le o year do array de bytes
