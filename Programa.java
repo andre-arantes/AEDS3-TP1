@@ -29,7 +29,7 @@ class Programa {
     }
 
     public static long write(Imdb imdb, Long filePointer) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
 
         Long position = filePointer;
         byte[] ba;
@@ -59,7 +59,7 @@ class Programa {
     }
 
     public static void read() throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
 
         raf.seek(0);
         System.out.println("Numero de filmes:" + raf.readInt());
@@ -87,8 +87,8 @@ class Programa {
 
     public static void main(String[] args) {
         try {
-            read();
             // load();
+            read();
         } catch (IOException e) {
             e.printStackTrace();
         }
