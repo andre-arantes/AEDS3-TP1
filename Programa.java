@@ -36,7 +36,7 @@ class Programa {
 
         if (position == 0) {
             raf.writeInt(1);
-            raf.writeBoolean(false);
+            raf.writeByte(0); // Criação da lápide
             ba = imdb.toByteArray();
             raf.writeInt(ba.length); // numero inteiro
             raf.write(ba); // escreve as informações
@@ -47,7 +47,7 @@ class Programa {
             raf.writeInt(ranking);
             ranking++;
             raf.seek(position);
-            raf.writeBoolean(false); // lapide
+            raf.writeByte(0); // Criação da lápide
             ba = imdb.toByteArray();
             raf.writeInt(ba.length);
             raf.write(ba);
@@ -85,12 +85,70 @@ class Programa {
         raf.close();
     }
 
-    public static void main(String[] args) {
+    // public static Imdb readByRanking(int search) {
+    // try {
+    // RandomAccessFile raf = new RandomAccessFile(".db/movie.db", "rw");
+    // raf.seek(0);
+    // Imdb imdb = new Imdb();
+
+    // while (raf.getFilePointer() < raf.length()) {
+    // raf.seek(raf.getFilePointer() + 1);
+    // int len = raf.readInt();
+    // imdb.setRanking(raf.readInt());
+    // if (imdb.getRanking() == search) {
+    // imdb.setName(raf.readUTF());
+    // imdb.setYear(raf.readInt());
+    // imdb.setRuntime(raf.readUTF());
+    // imdb.setGenre(raf.readUTF());
+    // imdb.setRating(raf.readInt());
+    // imdb.setDirector(raf.readUTF());
+
+    // return imdb;
+
+    // } else {
+    // System.out.println("Registro não encontrado");
+    // }
+    // raf.close();
+    // }
+    // return null;
+
+    // } catch (Exception e) {
+    // System.out.println("Erro na leitura do registro!");
+    // return null;
+    // }
+
+    // }
+
+    public static boolean create(Imdb imdb) throws FileNotFoundException {
+        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
         try {
-            // load();
-            read();
-        } catch (IOException e) {
-            e.printStackTrace();
+            raf.seek(raf.length());
+            raf.writeByte(0);
+            raf.writeInt(imdb.toByteArray().length);
+            raf.writeInt(imdb.getRanking()); // Escreve o ranking(id) no array de bytes
+            raf.writeUTF(imdb.getName()); // Escreve o nome no array de bytes
+            raf.writeInt(imdb.getYear()); // Escreve o year no array de bytes
+            raf.writeUTF(imdb.getRuntime());// Escreve o runtime no array de bytes
+
+            raf.writeUTF((imdb.getGenre()));// Escreve o array de genre no array de bytes
+
+            raf.writeFloat(imdb.getRating());// Escreve o rating no array de bytes
+            raf.writeUTF(imdb.getDirector());// Escreve o director no array de bytes
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("-> Erro ao criar o registro!");
+            return false;
         }
+
     }
+
+    // public static void main(String[] args) {
+    //     // readByRanking(4);
+    //     try {
+    //         read();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 }
