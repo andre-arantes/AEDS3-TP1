@@ -5,7 +5,7 @@ class Programa {
     // --------------- Carrega os registros e escreve no DB ---------------
 
     public static void load() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader("test.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./db/test.csv"))) {
             Imdb imdb = new Imdb();
             br.readLine();
             String line = br.readLine();
@@ -29,7 +29,7 @@ class Programa {
     }
 
     public static long write(Imdb imdb, Long filePointer) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         Long position = filePointer;
         byte[] ba;
 
@@ -60,7 +60,7 @@ class Programa {
     // --------------- CREATE ---------------
 
     public static boolean create(Imdb imdb) throws FileNotFoundException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
             raf.seek(raf.length());
             raf.writeByte(0);
@@ -77,13 +77,12 @@ class Programa {
             System.out.println("-> Erro ao criar o registro!");
             return false;
         }
-
     }
 
     // --------------- READS ---------------
 
     public static void readAll() throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
 
         raf.seek(0);
         System.out.println("Número de filmes: " + raf.readInt());
@@ -111,7 +110,7 @@ class Programa {
 
     public static Imdb readByRanking(int search) {
         try {
-            RandomAccessFile raf = new RandomAccessFile(".db/movie4.db", "r");
+            RandomAccessFile raf = new RandomAccessFile(".db/reduceddb.db", "r");
             Imdb imdb = new Imdb();
             raf.seek(0);
             System.out.println("Número de filmes: " + raf.readInt());
@@ -147,7 +146,7 @@ class Programa {
     // --------------- DELETE ---------------
 
     public static boolean delete(Imdb imdb) throws FileNotFoundException { // Exclui uma conta
-        RandomAccessFile raf = new RandomAccessFile("./db/movie4.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
             raf.seek(4); // Posiciona o ponteiro no inicio do arquivo
             while (raf.getFilePointer() < raf.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
@@ -174,6 +173,6 @@ class Programa {
     }
 
     public static void main(String[] args) throws IOException {
-
+        readAll();
     }
 }
