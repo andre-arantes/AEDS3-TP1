@@ -4,50 +4,33 @@ class Imdb {
 
     // ------------ Atributos ------------
 
-    private static int size;
-    private int id;
-    private int ranking;
-    private String name;
-    private int year;
-    private String runtime;
-    private String genre;
-    private float rating;
-    private String director;
+    private int ranking; // Inteiro 
+    private String name; // String de tamanho variável
+    private int year; // Data
+    private String runtime; // String de tamanho fixo
+    private String genre; // Lista de valores com separador
+
 
     // ------------ Construtores ---------------
 
-    public Imdb() { // Construtor padrão
-        this.id = 0;
+    // Construtor padrão
+    public Imdb() { 
         this.ranking = -1;
         this.name = null;
         this.year = -1;
         this.runtime = null;
         this.genre = null;
-        this.rating = 0F;
-        this.director = null;
     }
 
-    public Imdb(int id, int ranking, String name, int year, String runtime, String genre, float rating,
-            String director) {
-        this.id = size++;
+    public Imdb(int ranking, String name, int year, String runtime, String genre) {
         this.ranking = ranking;
         this.name = name;
         this.year = year;
         this.runtime = runtime;
         this.genre = genre;
-        this.rating = rating;
-        this.director = director;
     }
 
     // ------------ Getters e Setters ------------//
-    // Id
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId() {
-        this.id = size;
-    }
 
     // Ranking
     public int getRanking() {
@@ -94,24 +77,6 @@ class Imdb {
         this.genre = genre;
     }
 
-    // Rating
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    // Director
-    public String getDirector() {
-        return director;
-    }
-
-    public void setDirector(String director) {
-        this.director = director;
-    }
-
     // ------------ Métodos ------------
 
     public String toString() {
@@ -121,8 +86,6 @@ class Imdb {
                 ", year='" + getYear() + "'" +
                 ", runtime='" + getRuntime() + "'" +
                 ", genre='" + getGenre() + "'" +
-                ", rating='" + getRating() + "'" +
-                ", director='" + getDirector() + "'" +
                 "}";
     }
 
@@ -130,16 +93,11 @@ class Imdb {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream(); // Cria um novo array de bytes
         DataOutputStream dos = new DataOutputStream(baos); // Cria um fluxo de dados
-        // dos.writeInt(this.getId());
         dos.writeInt(this.getRanking()); // Escreve o ranking(id) no array de bytes
         dos.writeUTF(this.getName()); // Escreve o nome no array de bytes
         dos.writeInt(this.getYear()); // Escreve o year no array de bytes
         dos.writeUTF(this.getRuntime());// Escreve o runtime no array de bytes
-
-        dos.writeUTF((this.getGenre()));// Escreve o array de genre no array de bytes
-
-        dos.writeFloat(this.getRating());// Escreve o rating no array de bytes
-        dos.writeUTF(this.getDirector());// Escreve o director no array de bytes
+        dos.writeUTF(this.getGenre());// Escreve o array de genre no array de bytes
 
         dos.close();
         baos.close();
@@ -148,17 +106,13 @@ class Imdb {
     }
 
     public void fromByteArray(byte ba[]) throws IOException { // Recebe o array de bytes e faz a gravação
-
         ByteArrayInputStream bais = new ByteArrayInputStream(ba);
         DataInputStream dis = new DataInputStream(bais);
-        // this.id = dis.readInt();
         this.ranking = dis.readInt(); // Le o ranking do array de bytes
         this.name = dis.readUTF();// Le o name do array de bytes
         this.year = dis.readInt();// Le o year do array de bytes
         this.runtime = dis.readUTF();// Le o runtime do array de bytes
         this.genre = dis.readUTF();// Le o array de genre do array de bytes
-        this.rating = dis.readFloat();// Le o rating do array de bytes
-        this.director = dis.readUTF();// Le o director do array de bytes
     }
 
     public short size() throws IOException {

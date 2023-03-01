@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-class Menu extends Programa{
+class Menu extends Programa {
 
     public static void main(String[] args) throws IOException {
         RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
@@ -10,12 +10,12 @@ class Menu extends Programa{
 
         int opcao = 0;
         boolean loop = true;
-        
+
         if (raf.length() == 0)
             raf.writeInt(0);
         raf.seek(0); // Volta para o inicio do arquivo
         while (loop) {
-            System.out.println("__________MENU__________");
+            System.out.println(")_________MENU__________");
             System.out.println("|                      |");
             System.out.println("|0 - Sair              |");
             System.out.println("|1 - Create            |");
@@ -28,7 +28,7 @@ class Menu extends Programa{
                 try {
                     opcao = sc.nextInt();
                     if (opcao < 0 || opcao > 5)
-                        System.out.println("Operacao Inválida");
+                        System.out.println("Operação Inválida");
                 } catch (Exception e) {
                     System.out.println("-> Digite um número!");
                     sc.nextLine();
@@ -38,7 +38,8 @@ class Menu extends Programa{
             } while (opcao < 0 || opcao > 5);
 
             switch (opcao) {
-                case 1: // CREATE
+                // CREATE
+                case 1:
                     imdb = new Imdb();
                     System.out.println("\n____________CRIAR FILME____________");
 
@@ -52,18 +53,37 @@ class Menu extends Programa{
                     imdb.setRuntime(sc.next());
 
                     System.out.print("-> Genre: ");
-                    imdb.setGenre(sc.next());
+                    imdb.setGenre(sc.nextLine());
 
-                    System.out.print("-> Rating: ");
-                    imdb.setRating(sc.nextInt());
+                    if (create(imdb))
+                        System.out.println("\n-> Filme criada com sucesso!");
+                    else
+                        System.out.println("\n-> Erro ao criar filme!");
 
-                    System.out.print("-> Director: ");
-                    imdb.setDirector(sc.next());
+                case 2:
+                    System.out.println("\n____________Digite o id do filme buscado____________");
+                    System.out.print("-> Ranking: ");
+                    int search = sc.nextInt();
+                    imdb = readByRanking(search);
+                    if (imdb == null)
+                        System.out.println("-> Filme não encontrado!");
+                    else
+                        System.out.println("Filme encontrado!");
+                        break;
+                    // DELETE
+                case 4:
+                    imdb = new Imdb();
+                    System.out.println("\n____________DELETAR FILME____________");
+                    System.out.println("-> Escreva o nome do filme a ser deletado");
+                    imdb.setName(sc.next());
 
-                    if (create(imdb)) System.out.println("\n-> Conta criada com sucesso!");
-                    else System.out.println("\n-> Erro ao criar conta!");
-
-                    case 0: // SAIR
+                    if (delete(imdb))
+                        System.out.println("\n-> Filme deletado com sucesso!");
+                    else
+                        System.out.println("\n-> Erro ao deletar filme!");
+                        break;
+                    // SAIR
+                case 0:
                     System.out.println("-> Saindo");
                     loop = false;
                     break;
