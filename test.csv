@@ -1,0 +1,3 @@
+ranking of movie,movie name,Year,certificate,runtime,genre,RATING,metascore,DETAIL ABOUT MOVIE,DIRECTOR,ACTOR 1,ACTOR 2,ACTOR 3,ACTOR 4,votes,GROSS COLLECTION;
+1,The Shawshank Redemption,1994,15,142 min,"Drama, Crime",9.3,81,Two imprisoned men bond over a number of years finding solace and eventual redemption through acts of common decency.,Frank Darabont,Tim Robbins,Morgan Freeman,Bob Gunton,William Sadler,"2,603,314",28.34M;
+2,The Godfather,1972,X,175 min,"Crime, Drama",9.2,100,The aging patriarch of an organized crime dynasty in postwar New York City transfers control of his clandestine empire to his reluctant youngest son.,Francis Ford Coppola,Marlon Brando,Al Pacino,James Caan,Diane Keaton,"1,798,731",$134.97M;
