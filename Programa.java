@@ -1,7 +1,7 @@
 import java.io.*;
 
 class Programa {
-
+// teste 
     // --------------- Carrega os registros e escreve no DB ---------------
 
     public static void load() throws IOException {
