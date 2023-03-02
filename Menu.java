@@ -15,7 +15,7 @@ class Menu extends Programa {
             raf.writeInt(0);
         raf.seek(0); // Volta para o inicio do arquivo
         while (loop) {
-            System.out.println(")_________MENU__________");
+            System.out.println("|_________MENU_________|");
             System.out.println("|                      |");
             System.out.println("|0 - Sair              |");
             System.out.println("|1 - Create            |");
@@ -53,24 +53,27 @@ class Menu extends Programa {
                     imdb.setRuntime(sc.next());
 
                     System.out.print("-> Genre: ");
-                    imdb.setGenre(sc.nextLine());
+                    imdb.setGenre(sc.next());
 
                     if (create(imdb))
-                        System.out.println("\n-> Filme criada com sucesso!");
+                        System.out.println("\n-> Filme criado com sucesso!");
                     else
                         System.out.println("\n-> Erro ao criar filme!");
+                    break;
 
+                    // READ
                 case 2:
-                    System.out.println("\n____________Digite o id do filme buscado____________");
-                    System.out.print("-> Ranking: ");
-                    int search = sc.nextInt();
-                    imdb = readByRanking(search);
-                    if (imdb == null)
-                        System.out.println("-> Filme não encontrado!");
-                    else
-                        System.out.println("Filme encontrado!");
-                        break;
-                    // DELETE
+                    // System.out.println("\n____________Digite o ranking do filme buscado____________");
+                    // System.out.print("-> Ranking: ");
+                    // int search = sc.nextInt();
+                    // // imdb = readByRanking();
+                    // if (imdb == null)
+                    //     System.out.println("-> Filme não encontrado!");
+                    // else
+                    //     System.out.println("Filme encontrado!");
+                    readAll();
+                    break;
+                // DELETE
                 case 4:
                     imdb = new Imdb();
                     System.out.println("\n____________DELETAR FILME____________");
@@ -81,10 +84,10 @@ class Menu extends Programa {
                         System.out.println("\n-> Filme deletado com sucesso!");
                     else
                         System.out.println("\n-> Erro ao deletar filme!");
-                        break;
-                    // SAIR
+                    break;
+                // SAIR
                 case 0:
-                    System.out.println("-> Saindo");
+                    System.out.println("-> Saindo...");
                     loop = false;
                     break;
             }

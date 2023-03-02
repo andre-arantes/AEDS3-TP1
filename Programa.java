@@ -62,6 +62,15 @@ class Programa {
     public static boolean create(Imdb imdb) throws FileNotFoundException {
         RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
+            // Processo de escrita do novo ranking no cabeçalho
+            raf.seek(0);
+            int ultimoID = raf.readInt();
+            int novoID = ultimoID + 1;
+            imdb.setRanking(novoID);
+            raf.seek(0);
+            raf.writeInt(novoID);
+
+            // Começo da criação do novo registro
             raf.seek(raf.length());
             raf.writeByte(0);
             raf.writeInt(imdb.toByteArray().length); // Escreve o tamanho do registro
@@ -95,7 +104,8 @@ class Programa {
         Imdb imdb = new Imdb();
 
         while (currentPosition < endPosition) {
-            raf.seek(raf.getFilePointer() + 1);
+            if(raf.readByte() == 0) {
+            // raf.seek(raf.getFilePointer() + 1);
             len = raf.readInt();
             ba = new byte[len];
             raf.read(ba);
@@ -104,41 +114,90 @@ class Programa {
             System.out.println();
             currentPosition = raf.getFilePointer();
         }
-
+    }
         raf.close();
     }
 
     public static Imdb readByRanking(int search) {
         try {
-            RandomAccessFile raf = new RandomAccessFile(".db/reduceddb.db", "r");
+            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
             Imdb imdb = new Imdb();
-            raf.seek(0);
-            System.out.println("Número de filmes: " + raf.readInt());
-            System.out.println();
+            raf.seek(4);
+            // System.out.println("Número de filmes: " + raf.readInt());
+            // System.out.println();
             long currentPosition = raf.getFilePointer();
             long endPosition = raf.length();
+            int len;
+            int test;
+            // while (currentPosition < endPosition) {
+            if (raf.readByte() == 0) {
+                len = raf.readInt(); // Le o tamanho do registro
+                // System.out.println(len);
+                test = raf.readInt(); // Le o ranking atual
+                imdb.setRanking(test);
+                // if (imdb.getRanking() == search) { //ONDE DA O ERRO NA LEITURA DO REGISTRO
 
-            while (currentPosition < endPosition) {
-                raf.seek(raf.getFilePointer() + 1);
-                int len = raf.readInt(); // Le o tamanho do registro
-                imdb.setRanking(raf.readInt());
-                if (imdb.getRanking() == search) {
-                    System.out.println("Deu certo");
-                    return imdb;
+                // System.out.println(imdb.getRanking());
+                if (imdb.getRanking() == 1) {
+                    imdb.setName(raf.readUTF());
+                    imdb.setYear(raf.readInt());
+                    imdb.setRuntime(raf.readUTF());
+                    imdb.setGenre(raf.readUTF());
+                    System.out.println(imdb.getName());
+                    // System.out.println("Certo");
+                    // return imdb;
+                    // }
+                    // } else {
+                    // raf.skipBytes(raf.readInt());
+                    // }
                 } else {
-                    raf.skipBytes(len - 4);
+                    System.out.println("Error!");
                 }
-                raf.close();
-                // } else {
-                // raf.skipBytes(raf.readInt());
-                // }
             }
-            return null;
+            // }
+            // return null;
         } catch (Exception e) {
             System.out.println("Erro na leitura do registro!");
             return null;
         }
+        return null;
 
+    }
+
+    public static Imdb readByName(String nome) {
+        try {
+            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
+            Imdb imdb = null;
+            long currentPosition = raf.getFilePointer();
+            long endPosition = raf.length();
+            boolean achado = false;
+
+            
+            raf.seek(4);
+            while (currentPosition < endPosition && !achado) {
+            if (raf.readByte() == 0) {
+                imdb = new Imdb();
+                raf.readInt();
+
+                imdb.setRanking(raf.readInt());
+                imdb.setName(raf.readUTF());
+                imdb.setYear(raf.readInt());
+                imdb.setRuntime(raf.readUTF());
+                imdb.setGenre(raf.readUTF());
+
+                if (imdb.getName().equals(nome)) {
+                    achado = true;
+                    System.out.println("Achado");
+                }
+            } else {
+                raf.skipBytes(raf.readInt());
+            }
+            }
+            return imdb;
+        } catch (Exception e) {
+            System.out.println("Erro na leitura do registro!");
+            return null;
+        }    
     }
 
     // --------------- UPDATE ---------------
@@ -173,6 +232,6 @@ class Programa {
     }
 
     public static void main(String[] args) throws IOException {
-        readAll();
+        // delete(3);
     }
 }
