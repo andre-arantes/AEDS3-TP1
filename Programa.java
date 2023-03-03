@@ -1,7 +1,6 @@
 import java.io.*;
 
 class Programa {
-// teste 
     // --------------- Carrega os registros e escreve no DB ---------------
 
     public static void load() throws IOException {
@@ -104,127 +103,130 @@ class Programa {
         Imdb imdb = new Imdb();
 
         while (currentPosition < endPosition) {
-            if(raf.readByte() == 0) {
-            // raf.seek(raf.getFilePointer() + 1);
-            len = raf.readInt();
-            ba = new byte[len];
-            raf.read(ba);
-            imdb.fromByteArray(ba);
-            System.out.println(imdb);
-            System.out.println();
-            currentPosition = raf.getFilePointer();
+            if (raf.readByte() == 0) {
+                // raf.seek(raf.getFilePointer() + 1);
+                len = raf.readInt();
+                ba = new byte[len];
+                raf.read(ba);
+                imdb.fromByteArray(ba);
+                System.out.println(imdb);
+                System.out.println();
+                currentPosition = raf.getFilePointer();
+            }
         }
-    }
         raf.close();
     }
 
-    public static Imdb readByRanking(int search) {
+    public static Imdb readByRanking(int search) throws IOException {
         try {
             RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
             Imdb imdb = new Imdb();
             raf.seek(4);
-            // System.out.println("Número de filmes: " + raf.readInt());
-            // System.out.println();
             long currentPosition = raf.getFilePointer();
             long endPosition = raf.length();
             int len;
-            int test;
-            // while (currentPosition < endPosition) {
-            if (raf.readByte() == 0) {
-                len = raf.readInt(); // Le o tamanho do registro
-                // System.out.println(len);
-                test = raf.readInt(); // Le o ranking atual
-                imdb.setRanking(test);
-                // if (imdb.getRanking() == search) { //ONDE DA O ERRO NA LEITURA DO REGISTRO
-
-                // System.out.println(imdb.getRanking());
-                if (imdb.getRanking() == 1) {
-                    imdb.setName(raf.readUTF());
-                    imdb.setYear(raf.readInt());
-                    imdb.setRuntime(raf.readUTF());
-                    imdb.setGenre(raf.readUTF());
-                    System.out.println(imdb.getName());
-                    // System.out.println("Certo");
-                    // return imdb;
-                    // }
-                    // } else {
-                    // raf.skipBytes(raf.readInt());
-                    // }
-                } else {
-                    System.out.println("Error!");
+            byte ba[];
+            boolean flag = false;
+            while (currentPosition < endPosition) {
+                if (raf.readByte() == 0) {
+                    len = raf.readInt(); // Le o tamanho do registro
+                    ba = new byte[len];
+                    raf.read(ba);
+                    imdb.fromByteArray(ba);
+                    if (imdb.getRanking() == search) { // ONDE DA O ERRO NA LEITURA DO REGISTRO
+                        currentPosition = endPosition;
+                        flag = true;
+                    } else {
+                        currentPosition = raf.getFilePointer();
+                    }
+                } else { //se a lapide existir, ele pula o registro
+                    len = raf.readInt();
+                    long temp = raf.getFilePointer();
+                    raf.seek(temp + len);
+                    currentPosition = raf.getFilePointer();
                 }
             }
-            // }
-            // return null;
+            raf.close();
+            if (flag) {
+                return imdb;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             System.out.println("Erro na leitura do registro!");
             return null;
         }
-        return null;
-
     }
 
-    public static Imdb readByName(String nome) {
-        try {
-            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
-            Imdb imdb = null;
-            long currentPosition = raf.getFilePointer();
-            long endPosition = raf.length();
-            boolean achado = false;
+    // public static Imdb readByName(String nome) {
+    //     try {
+    //         RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
+    //         Imdb imdb = null;
+    //         long currentPosition = raf.getFilePointer();
+    //         long endPosition = raf.length();
+    //         boolean achado = false;
 
-            
-            raf.seek(4);
-            while (currentPosition < endPosition && !achado) {
-            if (raf.readByte() == 0) {
-                imdb = new Imdb();
-                raf.readInt();
+    //         raf.seek(4);
+    //         while (currentPosition < endPosition && !achado) {
+    //             if (raf.readByte() == 0) {
+    //                 imdb = new Imdb();
+    //                 raf.readInt();
 
-                imdb.setRanking(raf.readInt());
-                imdb.setName(raf.readUTF());
-                imdb.setYear(raf.readInt());
-                imdb.setRuntime(raf.readUTF());
-                imdb.setGenre(raf.readUTF());
+    //                 imdb.setRanking(raf.readInt());
+    //                 imdb.setName(raf.readUTF());
+    //                 imdb.setYear(raf.readInt());
+    //                 imdb.setRuntime(raf.readUTF());
+    //                 imdb.setGenre(raf.readUTF());
 
-                if (imdb.getName().equals(nome)) {
-                    achado = true;
-                    System.out.println("Achado");
-                }
-            } else {
-                raf.skipBytes(raf.readInt());
-            }
-            }
-            return imdb;
-        } catch (Exception e) {
-            System.out.println("Erro na leitura do registro!");
-            return null;
-        }    
-    }
+    //                 if (imdb.getName().equals(nome)) {
+    //                     achado = true;
+    //                     System.out.println("Achado");
+    //                 }
+    //             } else {
+    //                 raf.skipBytes(raf.readInt());
+    //             }
+    //         }
+    //         return imdb;
+    //     } catch (Exception e) {
+    //         System.out.println("Erro na leitura do registro!");
+    //         return null;
+    //     }
+    // }
 
     // --------------- UPDATE ---------------
     // Codigo do update (precisa do read por id e por nome pronto)
     // --------------- DELETE ---------------
 
-    public static boolean delete(Imdb imdb) throws FileNotFoundException { // Exclui uma conta
+    public static boolean delete(int search) throws FileNotFoundException { // Exclui uma conta
         RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
             raf.seek(4); // Posiciona o ponteiro no inicio do arquivo
-            while (raf.getFilePointer() < raf.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
-                if (raf.readByte() == 0) { // Se a lapide for 0 (ativo)
-                    int tam = raf.readInt();
-                    int ranking = raf.readInt();
-
-                    if (ranking == imdb.getRanking()) { // Se o id da conta for igual ao id da conta a ser excluida
-                        raf.seek(raf.getFilePointer() - 9); // Volta o ponteiro para o inicio do registro
-                        raf.writeByte(1); // Escreve a lapide 1 (excluido)
-                        return true;
+            long currentPosition = raf.getFilePointer();
+            long endPosition = raf.length();
+            int len;
+            // byte ba[];
+            boolean flag = false;
+            while(currentPosition < endPosition) {
+                long pointer = currentPosition;
+                if(raf.readByte() == 0) {
+                    len = raf.readInt();
+                    int test = raf.readInt();
+                    if(search == test) {
+                        raf.seek(pointer);
+                        raf.writeByte(1);
+                        flag = true;
+                        currentPosition = endPosition;
                     } else {
-                        raf.skipBytes(tam - 4); // Pula o resto do registro
+                        raf.seek(len + (pointer + 5)); // fazer o calculo certo de bytes que tem que pular
                     }
-                } else {
-                    raf.skipBytes(raf.readInt()); // Pula o registro
                 }
             }
-            return false;
+            raf.close();
+            if(flag) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("-> Erro ao deletar registro!");
             return false;
