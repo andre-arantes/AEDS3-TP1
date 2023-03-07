@@ -103,16 +103,16 @@ class Programa {
         Imdb imdb = new Imdb();
 
         while (currentPosition < endPosition) {
-            if (raf.readByte() == 0) {
-                raf.seek(raf.getFilePointer() + 1);
-                len = raf.readInt();
-                ba = new byte[len];
-                raf.read(ba);
-                imdb.fromByteArray(ba);
-                System.out.println(imdb);
-                System.out.println();
-                currentPosition = raf.getFilePointer();
-            } 
+            // if (raf.readByte() == 0) {
+            raf.seek(raf.getFilePointer() + 1);
+            len = raf.readInt();
+            ba = new byte[len];
+            raf.read(ba);
+            imdb.fromByteArray(ba);
+            System.out.println(imdb);
+            System.out.println();
+            currentPosition = raf.getFilePointer();
+            // }
         }
         raf.close();
     }
@@ -133,7 +133,7 @@ class Programa {
                     ba = new byte[len];
                     raf.read(ba);
                     imdb.fromByteArray(ba);
-                    if (imdb.getRanking() == search) { 
+                    if (imdb.getRanking() == search) {
                         currentPosition = endPosition;
                         flag = true;
                     } else {
@@ -195,8 +195,8 @@ class Programa {
 
     // --------------- UPDATE ---------------
     // public static Imdb getImdbUpdate (int ranking) {
-    //     Imdb imdb = new Imdb();
-        
+    // Imdb imdb = new Imdb();
+
     // }
     // --------------- DELETE ---------------
 
@@ -217,9 +217,15 @@ class Programa {
                         raf.seek(pointer);
                         raf.writeByte(1);
                         flag = true;
+                        raf.seek(0);
+                        int ultimoID = raf.readInt();
+                        int novoID = ultimoID - 1;
+                        raf.seek(0);
+                        raf.writeInt(novoID);
                         currentPosition = endPosition;
                     } else {
                         raf.seek(len + (pointer + 5)); // fazer o calculo certo de bytes que tem que pular
+                        currentPosition = raf.getFilePointer();
                     }
                 } else { // se a lapide existir, ele pula o registro
                     len = raf.readInt();

@@ -42,28 +42,13 @@ class Menu extends Programa {
                 case 1:
                     imdb = new Imdb();
                     System.out.println("\n____________CRIAR FILME____________");
-                    boolean check;
-                    String text;
-                    // do {
-                    //     check = false;
-                    //     System.out.print("Digite o Titulo do filme: ");
-                    //     text = sc.nextLine();
-                    //     if (text.isEmpty()) {
-                    //         System.out.print("Campo não pode ficar em branco: ");
-                    //         check = true;
-                    //     } else {
-                    //         imdb.setName(text);
-                    //     }
-                    // } while (check);
 
                     System.out.print("-> Name: ");
-                    // System.out.println();
                     String test;
                     sc.nextLine();
                     test = sc.nextLine();
                     imdb.setName(test);
 
-                    // System.out.println();
                     System.out.print("-> Year: ");
                     imdb.setYear(sc.nextInt());
 
@@ -75,7 +60,6 @@ class Menu extends Programa {
 
                     System.out.print("-> Genre: ");
                     String genre;
-                    // sc.nextLine();
                     genre = sc.nextLine();
                     imdb.setGenre(genre);
 
@@ -85,7 +69,7 @@ class Menu extends Programa {
                         System.out.println("\n-> Erro ao criar filme!");
                     break;
 
-                    // Busca
+                    // BUSCA
                 case 2:
                     System.out.println("\n____________BUSQUE ____________");
                     System.out.print("-> Escreva o id do filme a ser buscado: ");
@@ -95,9 +79,9 @@ class Menu extends Programa {
                     if (imdb == null)
                         System.out.println("-> Filme não encontrado!");
                     else
-                        System.out.println("Filme encontrado!");
+                        System.out.println(imdb);
                     break;
-                // DELETE
+                // UPDATE
                 case 3: 
                     System.out.println("\n____________ATUALIZAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser atualizado: ");
@@ -106,7 +90,7 @@ class Menu extends Programa {
                     // if (imdb != null) {
                         
                     // }
-                    
+                // DELETE
                 case 4:
                     System.out.println("\n____________DELETAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser deletado: ");
