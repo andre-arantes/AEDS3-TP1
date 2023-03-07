@@ -42,7 +42,8 @@ class Menu extends Programa {
                 case 1:
                     imdb = new Imdb();
                     System.out.println("\n____________CRIAR FILME____________");
-
+                    boolean check;
+                    String text;
                     // do {
                     //     check = false;
                     //     System.out.print("Digite o Titulo do filme: ");
@@ -55,31 +56,39 @@ class Menu extends Programa {
                     //     }
                     // } while (check);
 
-                    // System.out.print("-> Name: ");
+                    System.out.print("-> Name: ");
                     // System.out.println();
-                    // String test;
-                    // test = sc.nextLine();
-                    // imdb.setName(test);
+                    String test;
+                    sc.nextLine();
+                    test = sc.nextLine();
+                    imdb.setName(test);
 
                     // System.out.println();
-                    // System.out.print(" -> Year: ");
-                    // imdb.setYear(sc.nextInt());
+                    System.out.print("-> Year: ");
+                    imdb.setYear(sc.nextInt());
 
-                    // System.out.print("-> Runtime: ");
-                    // imdb.setRuntime(sc.next());
+                    System.out.print("-> Runtime: ");
+                    String runtime;
+                    sc.nextLine();
+                    runtime = sc.nextLine();
+                    imdb.setRuntime(runtime);
 
-                    // System.out.print("-> Genre: ");
-                    // imdb.setGenre(sc.next());
+                    System.out.print("-> Genre: ");
+                    String genre;
+                    // sc.nextLine();
+                    genre = sc.nextLine();
+                    imdb.setGenre(genre);
 
-                    // if (create(imdb))
-                    //     System.out.println("\n-> Filme criado com sucesso!");
-                    // else
-                    //     System.out.println("\n-> Erro ao criar filme!");
+                    if (create(imdb))
+                        System.out.println("\n-> Filme criado com sucesso!");
+                    else
+                        System.out.println("\n-> Erro ao criar filme!");
                     break;
 
                     // Busca
                 case 2:
                     System.out.println("\n____________BUSQUE ____________");
+                    System.out.print("-> Escreva o id do filme a ser buscado: ");
                     int search = sc.nextInt();
                     sc.nextLine();
                     imdb = readByRanking(search);
@@ -89,9 +98,18 @@ class Menu extends Programa {
                         System.out.println("Filme encontrado!");
                     break;
                 // DELETE
+                case 3: 
+                    System.out.println("\n____________ATUALIZAR FILME____________");
+                    System.out.println("-> Escreva o id do filme a ser atualizado: ");
+                    int searchID = sc.nextInt();
+                    imdb = readByRanking(searchID);
+                    // if (imdb != null) {
+                        
+                    // }
+                    
                 case 4:
                     System.out.println("\n____________DELETAR FILME____________");
-                    System.out.println("-> Escreva o id do filme a ser deletado");
+                    System.out.println("-> Escreva o id do filme a ser deletado: ");
                     int deleteID = sc.nextInt();
                     sc.nextLine();
                     if (delete(deleteID))
