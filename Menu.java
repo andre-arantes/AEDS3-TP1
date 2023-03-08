@@ -69,7 +69,7 @@ class Menu extends Programa {
                         System.out.println("\n-> Erro ao criar filme!");
                     break;
 
-                    // BUSCA
+                    // READ
                 case 2:
                     System.out.println("\n____________BUSQUE ____________");
                     System.out.print("-> Escreva o id do filme a ser buscado: ");
@@ -81,12 +81,14 @@ class Menu extends Programa {
                     else
                         System.out.println(imdb);
                     break;
-                // UPDATE
-                case 3: 
+                
+                    // UPDATE
+                case 3:
                     System.out.println("\n____________ATUALIZAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser atualizado: ");
                     int searchID = sc.nextInt();
                     imdb = readByRanking(searchID);
+                    
                     // if (imdb != null) {
                         
                     // }
