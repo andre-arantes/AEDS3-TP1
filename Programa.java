@@ -26,7 +26,7 @@ class Programa {
     }
 
     public static long write(Imdb imdb, Long filePointer) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb1.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         Long position = filePointer;
         byte[] ba;
 
@@ -57,7 +57,7 @@ class Programa {
     // --------------- CREATE ---------------
 
     public static boolean create(Imdb imdb) throws FileNotFoundException {
-        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb1.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
             // Processo de escrita do novo ranking no cabeçalho
             raf.seek(0);
@@ -117,7 +117,7 @@ class Programa {
 
     public static Imdb readByRanking(int search) throws IOException {
         try {
-            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb1.db", "r");
+            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
             Imdb imdb = new Imdb();
             raf.seek(4);
             long currentPosition = raf.getFilePointer();
@@ -192,14 +192,77 @@ class Programa {
     // }
 
     // --------------- UPDATE ---------------
-    // public static Imdb getImdbUpdate (int ranking) {
-    // Imdb imdb = new Imdb();
+    public static boolean update(Imdb novoImdb) {
+        try {
+            RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "r");
+            Imdb imdb = new Imdb();
+            raf.seek(4);
+            long currentPosition = raf.getFilePointer();
+            long endPosition = raf.length();
+            int len;
+            byte ba[];
+            int flag = 0;
+            boolean find = false;
 
-    // }
+            while (currentPosition < endPosition) {
+                long pointer = raf.getFilePointer();
+                if (raf.readByte() == 0) {
+                    len = raf.readInt();
+                    ba = new byte[len];
+                    raf.read(ba);
+                    imdb.fromByteArray(ba);
+                    if (imdb.getRanking() == novoImdb.getRanking()) {
+                        if (!(novoImdb.getName().equals(imdb.getName()))) {
+                            if (novoImdb.getName().length() > imdb.getName().length()) {
+                                flag = 1;
+                            }
+                        }
+                        imdb.setName(novoImdb.getName());
+                    }
+                    if (novoImdb.getYear() != 0) {
+                        imdb.setYear(novoImdb.getYear());
+                    }
+                    if (!(novoImdb.getRuntime().equals(imdb.getRuntime()))) {
+                        if (novoImdb.getRuntime().length() > imdb.getRuntime().length()) {
+                            flag = 1;
+                        }
+                    }
+                    if (!(novoImdb.getGenre().equals(imdb.getGenre()))) {
+                        if (novoImdb.getGenre().length() > imdb.getGenre().length()) {
+                            flag = 1;
+                        }
+                    }
+                    if (flag == 1) {
+                        raf.seek(pointer);
+                        raf.writeByte(1);
+                        write(imdb, raf.length());
+                        currentPosition = endPosition;
+                        find = true;
+                    } else {
+                        write(imdb, pointer);
+                        currentPosition = endPosition;
+                        find = true;
+                    }
+                } else {
+                    len = raf.readInt();
+                    long temp = raf.getFilePointer();
+                    raf.seek(temp + len);
+                    currentPosition = raf.getFilePointer();
+                }
+            }
+            raf.close();
+            return find;
+        } catch (Exception e) {
+            System.out.println("Erro na leitura do registro!");
+            return false;
+        }
+
+    }
+
     // --------------- DELETE ---------------
 
     public static boolean delete(int search) throws FileNotFoundException { // Exclui uma conta
-        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb1.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/reduceddb.db", "rw");
         try {
             raf.seek(4); // Posiciona o ponteiro no inicio do arquivo
             long currentPosition = raf.getFilePointer();

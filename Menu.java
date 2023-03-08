@@ -69,7 +69,7 @@ class Menu extends Programa {
                         System.out.println("\n-> Erro ao criar filme!");
                     break;
 
-                    // READ
+                // READ
                 case 2:
                     System.out.println("\n____________BUSQUE ____________");
                     System.out.print("-> Escreva o id do filme a ser buscado: ");
@@ -81,17 +81,37 @@ class Menu extends Programa {
                     else
                         System.out.println(imdb);
                     break;
-                
-                    // UPDATE
+
+                // UPDATE
                 case 3:
                     System.out.println("\n____________ATUALIZAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser atualizado: ");
                     int searchID = sc.nextInt();
+                    sc.nextLine();
+                    System.out.println();
                     imdb = readByRanking(searchID);
-                    
-                    // if (imdb != null) {
-                        
-                    // }
+                    if (imdb != null) {
+                        // // update(getImdbUpdate(searchID));
+                        Imdb novoImdb = new Imdb();
+                        novoImdb.setRanking(searchID);
+                        System.out.print("-> New name: ");
+                        novoImdb.setName(sc.nextLine());
+                        // System.out.println(novoImdb.getName());
+                        System.out.print("-> New year: ");
+                        novoImdb.setYear(sc.nextInt());
+                        System.out.print("-> New runtime: ");
+                        sc.nextLine();
+                        novoImdb.setRuntime(sc.nextLine());
+                        System.out.print("-> New genre: ");
+                        novoImdb.setGenre(sc.nextLine());
+                        update(novoImdb);
+                        System.out.println("Filme atualizado com sucesso");
+                    } else {
+                        System.out.println("Id não encontrado");
+                    }
+
+                    break;
+
                 // DELETE
                 case 4:
                     System.out.println("\n____________DELETAR FILME____________");
