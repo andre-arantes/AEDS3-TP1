@@ -4,7 +4,7 @@ import java.util.*;
 class Menu extends Programa {
 
     public static void main(String[] args) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/popo.db", "rw");
         Scanner sc = new Scanner(System.in);
         Imdb imdb = new Imdb();
 
@@ -96,6 +96,7 @@ class Menu extends Programa {
                         novoImdb.setRanking(searchID);
                         System.out.print("-> New name: ");
                         novoImdb.setName(sc.nextLine());
+                        // sc.nextLine();
                         // System.out.println(novoImdb.getName());
                         System.out.print("-> New year: ");
                         novoImdb.setYear(sc.nextInt());
