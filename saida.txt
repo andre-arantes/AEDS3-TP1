@@ -1,0 +1,26 @@
+|_________MENU_________|
+|                      |
+|0 - Sair              |
+|1 - Create            |
+|2 - Read              |
+|3 - Update            |
+|4 - Delete            |
+|5 - Intercalar        |
+|6 - Read all          |
+|______________________|
+
+-> 
+____________INTERCALAÇÃO____________
+[{ ranking='59', name='City Lights', year='1931', runtime='87 min', genre='"Comedy, Drama, Romance"'}, { ranking='256', name='Pirates of the Caribbean: The Curse of the Black Pearl', year='2003', runtime='143 min', genre='"Action, Adventure, Fantasy"'}]
+|_________MENU_________|
+|                      |
+|0 - Sair              |
+|1 - Create            |
+|2 - Read              |
+|3 - Update            |
+|4 - Delete            |
+|5 - Intercalar        |
+|6 - Read all          |
+|______________________|
+
+-> 

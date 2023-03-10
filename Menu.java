@@ -4,7 +4,7 @@ import java.util.*;
 class Menu extends CRUD {
 
     public static void main(String[] args) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
         Scanner sc = new Scanner(System.in);
         Imdb imdb = new Imdb();
 
@@ -22,12 +22,14 @@ class Menu extends CRUD {
             System.out.println("|2 - Read              |");
             System.out.println("|3 - Update            |");
             System.out.println("|4 - Delete            |");
+            System.out.println("|5 - Intercalar        |");
+            System.out.println("|6 - Read all          |");
             System.out.println("|______________________|\n");
             System.out.print("-> ");
             do {
                 try {
                     opcao = sc.nextInt();
-                    if (opcao < 0 || opcao > 5)
+                    if (opcao < 0 || opcao > 7)
                         System.out.println("Operação Inválida");
                 } catch (Exception e) {
                     System.out.println("-> Digite um número!");
@@ -35,7 +37,7 @@ class Menu extends CRUD {
                     break;
                 }
 
-            } while (opcao < 0 || opcao > 5);
+            } while (opcao < 0 || opcao > 7);
 
             switch (opcao) {
                 // CREATE
@@ -124,7 +126,14 @@ class Menu extends CRUD {
                     else
                         System.out.println("\n-> Erro ao deletar filme!");
                     break;
-                // SAIR
+                case 5:
+                System.out.println("\n____________INTERCALAÇÃO____________");
+                    Sort.intercalar(raf);
+                    break;
+                case 6:
+                    Sort.printFile(raf);
+                    break;
+                    // SAIR
                 case 0:
                     System.out.println("-> Saindo...");
                     loop = false;

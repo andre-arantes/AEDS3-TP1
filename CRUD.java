@@ -24,7 +24,7 @@ class CRUD {
     }
 
     public static long writeInDatabase(Imdb imdb, Long filePointer, int select) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
         Long position = filePointer;
         byte[] ba;
 
@@ -60,7 +60,7 @@ class CRUD {
     // --------------- CREATE ---------------
 
     public static boolean create(Imdb imdb) throws FileNotFoundException {
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
         try {
             // Processo de escrita do novo ranking no cabeçalho
             raf.seek(0);
@@ -90,9 +90,10 @@ class CRUD {
 
     // --------------- READS ---------------
 
+
     public static Imdb readByRanking(int search) throws IOException {
         try {
-            RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "r");
+            RandomAccessFile raf = new RandomAccessFile("./db/database.db", "r");
             Imdb imdb = new Imdb();
             raf.seek(4);
             long currentPosition = raf.getFilePointer();
@@ -137,7 +138,7 @@ class CRUD {
         // registro desejado deve ser deletado e o novo deve ser criado no final do
         // arquivo
         try {
-            RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+            RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
             Imdb imdb = new Imdb();
             raf.seek(4);
             long currentPosition = raf.getFilePointer();
@@ -218,7 +219,7 @@ class CRUD {
     // --------------- DELETE ---------------
 
     public static boolean delete(int search) throws FileNotFoundException { // Exclui uma conta
-        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
         try {
             raf.seek(4); // Posiciona o ponteiro no inicio do arquivo
             long currentPosition = raf.getFilePointer();
@@ -229,8 +230,8 @@ class CRUD {
                 long pointer = currentPosition;
                 if (raf.readByte() == 0) { // Se o filme não foi deletado
                     len = raf.readInt();
-                    int test = raf.readInt();
-                    if (search == test) {
+                    int id = raf.readInt();
+                    if (search == id) {
                         raf.seek(pointer);
                         raf.writeByte(1);
                         flag = true;
