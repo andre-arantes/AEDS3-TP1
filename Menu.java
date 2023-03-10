@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-class Menu extends Programa {
+class Menu extends CRUD {
 
     public static void main(String[] args) throws IOException {
-        RandomAccessFile raf = new RandomAccessFile("./db/popo.db", "rw");
+        RandomAccessFile raf = new RandomAccessFile("./db/movie.db", "rw");
         Scanner sc = new Scanner(System.in);
         Imdb imdb = new Imdb();
 
