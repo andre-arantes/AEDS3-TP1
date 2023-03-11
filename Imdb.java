@@ -23,11 +23,11 @@ class Imdb {
     }
 
     public Imdb(int ranking, String name, int year, String runtime, String genre) {
-        this.ranking = ranking;
-        this.name = name;
-        this.year = year;
-        this.runtime = runtime;
-        this.genre = genre;
+        this.ranking = ranking; // Inteiro
+        this.name = name; // String de tamanho variável
+        this.year = year; // Data
+        this.runtime = runtime; // String de tamanho fixo
+        this.genre = genre; // Lista de valores
     }
 
     // ------------ Getters e Setters ------------//

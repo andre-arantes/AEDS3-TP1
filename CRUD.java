@@ -133,10 +133,10 @@ class CRUD {
     }
 
     // --------------- UPDATE ---------------
+
     public static boolean update(Imdb newImdb) {
-        // atualizar o id depois que adicionar um filme se registro ALTERAR de tamanho o
-        // registro desejado deve ser deletado e o novo deve ser criado no final do
-        // arquivo
+        /* Atualizar o id depois que adicionar um filme se registro ALTERAR de tamanho o
+        registro desejado deve ser deletado e o novo deve ser criado no final do arquivo */
         try {
             RandomAccessFile raf = new RandomAccessFile("./db/database.db", "rw");
             Imdb imdb = new Imdb();
@@ -183,16 +183,13 @@ class CRUD {
                         imdb.setGenre(newImdb.getGenre());
 
                         System.out.println(imdb);
-                        if (flag > 0) { // se o tamanho do registro foi aumentado, deve-se mover o ponteiro para o
-                                        // final
-                                        // do arquivo e adicionar o novo
+                        if (flag > 0) { // se o tamanho do registro foi aumentado, deve-se mover o ponteiro para o final do arquivo e adicionar o novo
                             raf.seek(pointer);
                             raf.writeByte(1);
                             writeInDatabase(imdb, raf.length(), 1);
                             currentPosition = endPosition;
                             find = true;
-                        } else { // se o tamanho do registro for menor ou igual ao original, somente atualizar os
-                                 // arquivos no local
+                        } else { // se o tamanho do registro for menor ou igual ao original somente atualizar os arquivos no local
                             writeInDatabase(imdb, pointer, 1);
                             currentPosition = endPosition;
                             find = true;

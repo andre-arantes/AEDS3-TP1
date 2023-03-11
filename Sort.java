@@ -43,8 +43,8 @@ public class Sort extends CRUD {
             byte ba[];
             boolean flag = false;
             while (currentPosition < endPosition) {
-                if (raf.readByte() == 0) { // se a lápide não existe (0000)
-                    len = raf.readInt(); // Le o tamanho do registro
+                if (raf.readByte() == 0) { // Se a lápide não existe (0000)
+                    len = raf.readInt(); // Lê o tamanho do registro
                     ba = new byte[len]; // Cria um vetor de bytes de acordo com o tamanho (len)
                     raf.read(ba); // Lê o vetor de bytes
                     imdb.fromByteArray(ba);
@@ -86,7 +86,7 @@ public class Sort extends CRUD {
 
         raf.seek(4); // Posiciona o ponteiro no inicio do arquivo
         while (currentPosition < endPosition) {
-            long pointer = currentPosition; // Enquanto o ponteiro nao chegar no final do arquivo
+            long pointer = currentPosition; // Enquanto o ponteiro não chegar no final do arquivo
             if (raf.readByte() == 0) {
                 len = raf.readInt();
                 rnk = raf.readInt();
@@ -103,8 +103,8 @@ public class Sort extends CRUD {
         }
 
         System.out.println(movies);
-        // ArrayList<Imdb> moviesTemp = new ArrayList<Imdb>(); // Array temporário para armazenar as contas
-        // int contador = 0; // Contador para saber quantas contas foram adicionadas no arquivo
+        // ArrayList<Imdb> moviesTemp = new ArrayList<Imdb>(); // Array temporário para armazenar os filmes
+        // int contador = 0; // Contador para saber quantos filmes foram adicionadas no arquivo
         // while (movies.size() > 0) { // Enquanto o array movies nao estiver vazio
         //     for (int j = 0; j < 5; j++) { // Adiciona 5 movies no array temporário
         //         if (movies.size() > 0) { // Se o array movies nao estiver vazio

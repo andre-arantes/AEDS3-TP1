@@ -13,7 +13,9 @@ class Menu extends CRUD {
 
         if (raf.length() == 0)
             raf.writeInt(0);
+            
         raf.seek(0); // Volta para o inicio do arquivo
+
         while (loop) {
             System.out.println("|_________MENU_________|");
             System.out.println("|                      |");
@@ -40,7 +42,7 @@ class Menu extends CRUD {
             } while (opcao < 0 || opcao > 7);
 
             switch (opcao) {
-                // CREATE
+                // --------- CREATE --------- 
                 case 1:
                     imdb = new Imdb();
                     System.out.println("\n____________CRIAR FILME____________");
@@ -71,7 +73,7 @@ class Menu extends CRUD {
                         System.out.println("\n-> Erro ao criar filme!");
                     break;
 
-                // READ
+                // --------- READ --------- 
                 case 2:
                     System.out.println("\n____________BUSQUE ____________");
                     System.out.print("-> Escreva o id do filme a ser buscado: ");
@@ -84,7 +86,7 @@ class Menu extends CRUD {
                         System.out.println(imdb);
                     break;
 
-                // UPDATE
+                //--------- UPDATE --------- 
                 case 3:
                     System.out.println("\n____________ATUALIZAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser atualizado: ");
@@ -93,7 +95,7 @@ class Menu extends CRUD {
                     System.out.println();
                     imdb = readByRanking(searchID);
                     if (imdb != null) {
-                        // // update(getImdbUpdate(searchID));
+                        // update(getImdbUpdate(searchID));
                         Imdb novoImdb = new Imdb();
                         novoImdb.setRanking(searchID);
                         System.out.print("-> New name: ");
@@ -115,7 +117,7 @@ class Menu extends CRUD {
 
                     break;
 
-                // DELETE
+                //--------- DELETE --------- 
                 case 4:
                     System.out.println("\n____________DELETAR FILME____________");
                     System.out.println("-> Escreva o id do filme a ser deletado: ");
@@ -126,14 +128,19 @@ class Menu extends CRUD {
                     else
                         System.out.println("\n-> Erro ao deletar filme!");
                     break;
+
+                //--------- INTERCALAÇÂO ---------
                 case 5:
                 System.out.println("\n____________INTERCALAÇÃO____________");
                     Sort.intercalar(raf);
                     break;
+
+
                 case 6:
                     Sort.printFile(raf);
                     break;
-                    // SAIR
+
+                //--------- SAIR ---------
                 case 0:
                     System.out.println("-> Saindo...");
                     loop = false;
