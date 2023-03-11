@@ -112,7 +112,6 @@ class CRUD {
                         return imdb;
                     } else { // Senão, continua a ler
                         currentPosition = raf.getFilePointer();
-                        // raf.skipBytes(len - 7);
                     }
                 } else { // Se a lapide existir, ele pula o registro
                     len = raf.readInt();
@@ -121,7 +120,7 @@ class CRUD {
                     currentPosition = raf.getFilePointer();
                 }
             }
-            // raf.close();
+            raf.close();
             if (flag) { // Se contem o registro, retorna o filme
                 return imdb;
             } else {

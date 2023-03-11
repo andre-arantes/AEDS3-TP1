@@ -9,7 +9,7 @@ class Menu extends CRUD {
         Imdb imdb = new Imdb();
 
         int opcao = 0;
-        boolean loop = true; 
+        boolean loop = true;
 
         if (raf.length() == 0)
             raf.writeInt(0);
@@ -131,7 +131,7 @@ class Menu extends CRUD {
 
                 // ------- INTERCALAÇÂO -------
                 case 5:
-                    System.out.println("\n____________INTERCALAÇÃO____________");
+                    System.out.println("\n____________INTERCALAR____________");
                     Sort.intercalar();
                     break;
 

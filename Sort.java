@@ -38,52 +38,43 @@ public class Sort extends CRUD {
             raf.readInt();
             int ranking = raf.readInt();
             String name = raf.readUTF();
-            int year = raf.readInt();
-            String runtime = raf.readUTF();
-            String genre = raf.readUTF();
+            raf.readInt();
+            raf.readUTF();
+            raf.readUTF();
 
             System.out.println("Ranking: " + ranking + "\t| Nome: " + name);
         }
     }
 
-    public static Imdb readFile(RandomAccessFile raf, int search) throws IOException {
-        try {
-            Imdb imdb = new Imdb();
-            raf.seek(4);
-            long currentPosition = raf.getFilePointer();
-            long endPosition = raf.length();
-            int len;
-            byte ba[];
-            boolean flag = false;
-            while (currentPosition < endPosition) {
-                if (raf.readByte() == 0) { // Se a lápide não existe (0000)
-                    len = raf.readInt(); // Lê o tamanho do registro
-                    ba = new byte[len]; // Cria um vetor de bytes de acordo com o tamanho (len)
-                    raf.read(ba); // Lê o vetor de bytes
-                    imdb.fromByteArray(ba);
-                    if (imdb.getRanking() == search) { // Se o ranking for o mesmo que o buscado
-                        currentPosition = endPosition;
-                        flag = true;
-                    } else { // Senão, continua a ler
-                        currentPosition = raf.getFilePointer();
-                    }
-                } else { // Se a lapide existir, ele pula o registro
-                    len = raf.readInt();
-                    long temp = raf.getFilePointer();
-                    raf.seek(temp + len);
+    public static Imdb readInArq(RandomAccessFile raf, int search) throws IOException {
+        Imdb imdb = new Imdb();
+        raf.seek(0);
+        long currentPosition = raf.getFilePointer();
+        long endPosition = raf.length();
+        int len;
+        while (currentPosition < endPosition) {
+            if (raf.readByte() == 0) { // Se a lápide não existe (0000)
+                len = raf.readInt(); // Lê o tamanho do registro
+                imdb.setRanking(raf.readInt());
+                // System.out.println(imdb.getRanking());
+                if (imdb.getRanking() == search) {
+                    imdb.setName(raf.readUTF());
+                    imdb.setYear(raf.readInt());
+                    imdb.setRuntime(raf.readUTF());
+                    imdb.setGenre(raf.readUTF());
+                    return imdb;
+                } else {
                     currentPosition = raf.getFilePointer();
                 }
+            } else { // Se a lapide existir, ele pula o registro
+                len = raf.readInt();
+                long temp = raf.getFilePointer();
+                raf.seek(temp + len);
+                currentPosition = raf.getFilePointer();
             }
-            raf.close();
-            if (flag) { // Se contem o registro, retorna o filme
-                return imdb;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            System.out.println(" -> Erro na leitura do registro!");
-            return null;
         }
+        raf.close();
+        return null;
     }
 
     // INTERCALAÇÃO
@@ -115,7 +106,7 @@ public class Sort extends CRUD {
                 currentPosition = raf.getFilePointer();
             }
         }
-
+        // System.out.println(movies);
         ArrayList<Imdb> moviesTemp = new ArrayList<Imdb>(); // Array temporário para armazenar os filmes
         int contador = 0; // Contador para saber quantos filmes foram adicionadas no arquivo
         while (movies.size() > 0) { // Enquanto o array movies nao estiver vazio
@@ -154,86 +145,30 @@ public class Sort extends CRUD {
         // System.out.println("\nArquivo 2: ");
         // printFile2(arq2);
 
-
-// --------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------
 
         ArrayList<Imdb> movies1 = new ArrayList<Imdb>();
         ArrayList<Imdb> movies2 = new ArrayList<Imdb>();
-
-        System.out.println("\n-> Intercalação 1 ...");
+        System.out.println("\n-> Intercalação 1: ");
 
         arq1.seek(0); // Posiciona o ponteiro no inicio do arquivo 1
-        // while (arq1.getFilePointer() < arq1.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
-            arq1.readInt();
+        while (arq1.getFilePointer() < arq2.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
             arq1.readByte();
             arq1.readInt();
-            movie = readFile(arq1, arq1.readInt()); // Le o registro
+            movie = readInArq(arq1, arq1.readInt()); // Le o registro
             movies1.add(movie); // Adiciona o registro no array movies1
-        // }
+        }
 
-        // arq2.seek(0); // Posiciona o ponteiro no inicio do arquivo 2
-        // while (arq2.getFilePointer() < arq2.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
-        //     arq2.readByte();
-        //     arq2.readInt();
-        //     movie = readFile(arq2, arq2.readInt()); // Le o registro
-        //     movies2.add(movie); // Adiciona o registro no array movies2
-        // }
-
-        // printFile2(movies1);
-        System.out.println(movies1);
-
-        // RandomAccessFile arq3 = new RandomAccessFile("arq3.bin", "rw");
-        // RandomAccessFile arq4 = new RandomAccessFile("arq4.bin", "rw");
-
-        // contador = 0; // Contador para saber quantas movies foram adicionadas no arquivo
-        // moviesTemp.clear(); // Limpa o array temporário
-        // int m = 5; // Tamanho do array temporário
-
-        // while (movies1.size() > 0 || movies2.size() > 0) { // Enquanto o array movies1 ou o array movies2 nao estiverem
-        //                                                    // vazios
-        //     for (int i = 0; i < m; i++) {
-        //         if (movies1.size() > 0) { // Se o array movies1 nao estiver vazio adiciona a primeira movie no array
-        //                                   // temporário e remove do array movies1
-        //             moviesTemp.add(movies1.get(0));
-        //             movies1.remove(0);
-        //         }
-        //         if (movies2.size() > 0) { // Se o array movies2 nao estiver vazio adiciona a primeira movie no array
-        //                                   // temporário e remove do array movies2
-        //             moviesTemp.add(movies2.get(0));
-        //             movies2.remove(0);
-        //         }
-        //     }
-
-        //     moviesTemp.sort((Imdb c1, Imdb c2) -> c1.getRanking() - c2.getRanking()); // Ordena o array temporário
-
-        //     contador++;
-
-        //     if (contador % 2 != 0) { // Se o contador for impar adiciona no arquivo 3
-        //         for (Imdb c : moviesTemp) {
-        //             arq3.writeByte(0);
-        //             arq3.writeInt(c.toByteArray().length);
-        //             arq3.write(c.toByteArray());
-        //         }
-        //     } else { // Se o contador for par adiciona no arquivo 4
-        //         for (Imdb c : moviesTemp) {
-        //             arq4.writeByte(0);
-        //             arq4.writeInt(c.toByteArray().length);
-        //             arq4.write(c.toByteArray());
-        //         }
-        //     }
-
-        //     moviesTemp.clear(); // Limpa o array temporário
-        // }
-
-        // /*
-        //  * System.out.println("\nArquivo 3: ");
-        //  * printFile(arq3);
-        //  * System.out.println("\nArquivo 4: ");
-        //  * printFile(arq4);
-        //  */
+        arq2.seek(0); // Posiciona o ponteiro no inicio do arquivo 2
+        while (arq2.getFilePointer() < arq2.length()) { // Enquanto o ponteiro naochegar no final do arquivo
+            arq2.readByte();
+            arq2.readInt();
+            movie = readInArq(arq2, arq2.readInt()); // Le o registro
+            movies2.add(movie); // Adiciona o registro no array movies2
+        }
 
         raf.close();
         return true;
     }
-  
+
 }
