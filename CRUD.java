@@ -4,7 +4,7 @@ class CRUD {
     // --------------- Carrega os registros e escreve no DB ---------------
 
     public static void loadInDatabase() throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader("./db/newimdb.csv"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("./db/test.csv"))) {
             Imdb imdb = new Imdb();
             br.readLine();
             String line = br.readLine();
@@ -101,7 +101,7 @@ class CRUD {
             int len;
             byte ba[];
             boolean flag = false;
-            while (currentPosition < endPosition) {
+            while (raf.getFilePointer() < raf.length()) {
                 if (raf.readByte() == 0) { // se a lápide não existe (0000)
                     len = raf.readInt(); // Le o tamanho do registro
                     ba = new byte[len]; // Cria um vetor de bytes de acordo com o tamanho (len)
@@ -109,9 +109,10 @@ class CRUD {
                     imdb.fromByteArray(ba);
                     if (imdb.getRanking() == search) { // Se o ranking for o mesmo que o buscado
                         currentPosition = endPosition;
-                        flag = true;
+                        return imdb;
                     } else { // Senão, continua a ler
                         currentPosition = raf.getFilePointer();
+                        // raf.skipBytes(len - 7);
                     }
                 } else { // Se a lapide existir, ele pula o registro
                     len = raf.readInt();
@@ -120,7 +121,7 @@ class CRUD {
                     currentPosition = raf.getFilePointer();
                 }
             }
-            raf.close();
+            // raf.close();
             if (flag) { // Se contem o registro, retorna o filme
                 return imdb;
             } else {
