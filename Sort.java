@@ -121,8 +121,8 @@ public class Sort extends CRUD {
         while (movies.size() > 0) { // Enquanto o array movies nao estiver vazio
             for (int j = 0; j < 10; j++) { // Adiciona 10 movies no array temporário
                 if (movies.size() > 0) { // Se o array movies nao estiver vazio
-                    moviesTemp.add(movies.get(0)); // Adiciona a primeira conta do array movies no array temporário
-                    movies.remove(0); // Remove a primeira conta do array contas
+                    moviesTemp.add(movies.get(0)); // Adiciona a primeira movie do array movies no array temporário
+                    movies.remove(0); // Remove a primeira movie do array movies
                 }
             }
 
@@ -148,39 +148,92 @@ public class Sort extends CRUD {
 
             moviesTemp.clear(); // Limpa o array temporário
         }
-        System.out.println("\nArquivo 1: ");
-        printFile2(arq1);
-        System.out.println("\nArquivo 2: ");
-        printFile2(arq2);
+
+        // System.out.println("\nArquivo 1: ");
+        // printFile2(arq1);
+        // System.out.println("\nArquivo 2: ");
+        // printFile2(arq2);
+
+
+// --------------------------------------------------------------------------------------
+
+        ArrayList<Imdb> movies1 = new ArrayList<Imdb>();
+        ArrayList<Imdb> movies2 = new ArrayList<Imdb>();
+
+        System.out.println("\n-> Intercalação 1 ...");
+
+        arq1.seek(0); // Posiciona o ponteiro no inicio do arquivo 1
+        // while (arq1.getFilePointer() < arq1.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
+            arq1.readInt();
+            arq1.readByte();
+            arq1.readInt();
+            movie = readFile(arq1, arq1.readInt()); // Le o registro
+            movies1.add(movie); // Adiciona o registro no array movies1
+        // }
+
+        // arq2.seek(0); // Posiciona o ponteiro no inicio do arquivo 2
+        // while (arq2.getFilePointer() < arq2.length()) { // Enquanto o ponteiro nao chegar no final do arquivo
+        //     arq2.readByte();
+        //     arq2.readInt();
+        //     movie = readFile(arq2, arq2.readInt()); // Le o registro
+        //     movies2.add(movie); // Adiciona o registro no array movies2
+        // }
+
+        // printFile2(movies1);
+        System.out.println(movies1);
+
+        // RandomAccessFile arq3 = new RandomAccessFile("arq3.bin", "rw");
+        // RandomAccessFile arq4 = new RandomAccessFile("arq4.bin", "rw");
+
+        // contador = 0; // Contador para saber quantas movies foram adicionadas no arquivo
+        // moviesTemp.clear(); // Limpa o array temporário
+        // int m = 5; // Tamanho do array temporário
+
+        // while (movies1.size() > 0 || movies2.size() > 0) { // Enquanto o array movies1 ou o array movies2 nao estiverem
+        //                                                    // vazios
+        //     for (int i = 0; i < m; i++) {
+        //         if (movies1.size() > 0) { // Se o array movies1 nao estiver vazio adiciona a primeira movie no array
+        //                                   // temporário e remove do array movies1
+        //             moviesTemp.add(movies1.get(0));
+        //             movies1.remove(0);
+        //         }
+        //         if (movies2.size() > 0) { // Se o array movies2 nao estiver vazio adiciona a primeira movie no array
+        //                                   // temporário e remove do array movies2
+        //             moviesTemp.add(movies2.get(0));
+        //             movies2.remove(0);
+        //         }
+        //     }
+
+        //     moviesTemp.sort((Imdb c1, Imdb c2) -> c1.getRanking() - c2.getRanking()); // Ordena o array temporário
+
+        //     contador++;
+
+        //     if (contador % 2 != 0) { // Se o contador for impar adiciona no arquivo 3
+        //         for (Imdb c : moviesTemp) {
+        //             arq3.writeByte(0);
+        //             arq3.writeInt(c.toByteArray().length);
+        //             arq3.write(c.toByteArray());
+        //         }
+        //     } else { // Se o contador for par adiciona no arquivo 4
+        //         for (Imdb c : moviesTemp) {
+        //             arq4.writeByte(0);
+        //             arq4.writeInt(c.toByteArray().length);
+        //             arq4.write(c.toByteArray());
+        //         }
+        //     }
+
+        //     moviesTemp.clear(); // Limpa o array temporário
+        // }
+
+        // /*
+        //  * System.out.println("\nArquivo 3: ");
+        //  * printFile(arq3);
+        //  * System.out.println("\nArquivo 4: ");
+        //  * printFile(arq4);
+        //  */
+
         raf.close();
         return true;
     }
-
-    // --------------------------------------------------------------------------//
-    public static void movieSort(ArrayList<Imdb> moviesTemp) {
-        quicksort(0, moviesTemp.size() - 1, moviesTemp);
-    }
-
-    public static void quicksort(int esq, int dir, ArrayList<Imdb> moviesTemp) {
-        int i = esq, j = dir;
-        int pivo = moviesTemp.get((dir + esq) / 2).getRanking();
-        while (i <= j) {
-            while (moviesTemp.get(i).getRanking() < pivo)
-                i++;
-            while (moviesTemp.get(j).getRanking() > pivo)
-                j--;
-            if (i <= j) {
-                // swap
-                Imdb temp = moviesTemp.get(i);
-                moviesTemp.set(i, moviesTemp.get(j));
-                moviesTemp.set(j, temp);
-                i++;
-                j--;
-            }
-        }
-        if (esq < j)
-            quicksort(esq, j, moviesTemp);
-        if (i < dir)
-            quicksort(i, dir, moviesTemp);
-    }
+  
 }
