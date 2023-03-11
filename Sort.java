@@ -31,6 +31,21 @@ public class Sort extends CRUD {
         raf.close();
     }
 
+    public static void printFile2(RandomAccessFile raf) throws IOException {
+        raf.seek(0);
+        while (raf.getFilePointer() < raf.length()) {
+            raf.readByte();
+            raf.readInt();
+            int ranking = raf.readInt();
+            String name = raf.readUTF();
+            int year = raf.readInt();
+            String runtime = raf.readUTF();
+            String genre = raf.readUTF();
+
+            System.out.println("Ranking: " + ranking + "\t| Nome: " + name);
+        }
+    }
+
     public static Imdb readFile(RandomAccessFile raf, int search) throws IOException {
         try {
             Imdb imdb = new Imdb();
@@ -101,45 +116,71 @@ public class Sort extends CRUD {
             }
         }
 
-        // System.out.println(movies);
         ArrayList<Imdb> moviesTemp = new ArrayList<Imdb>(); // Array temporário para armazenar os filmes
         int contador = 0; // Contador para saber quantos filmes foram adicionadas no arquivo
         while (movies.size() > 0) { // Enquanto o array movies nao estiver vazio
-            for (int j = 0; j < 5; j++) { // Adiciona 5 movies no array temporário
+            for (int j = 0; j < 10; j++) { // Adiciona 10 movies no array temporário
                 if (movies.size() > 0) { // Se o array movies nao estiver vazio
                     moviesTemp.add(movies.get(0)); // Adiciona a primeira conta do array movies no array temporário
                     movies.remove(0); // Remove a primeira conta do array contas
                 }
             }
-        }
-        // System.out.println(movies);
-        // System.out.println(moviesTemp);
-        moviesTemp.sort((Imdb c1, Imdb c2) -> c1.getRanking() - c2.getRanking()); //
-        // Ordena o array temporário
 
-        contador++;
+            moviesTemp.sort((Imdb c1, Imdb c2) -> c1.getRanking() - c2.getRanking()); //
 
-        if (contador % 2 != 0) { // Se o contador for impar adiciona no arquivo 1
-            for (Imdb c : moviesTemp) {
-                arq1.writeByte(0);
-                arq1.writeInt(c.toByteArray().length);
-                arq1.write(c.toByteArray());
+            // Ordena o array temporário
+
+            contador++;
+
+            if (contador % 2 != 0) { // Se o contador for impar adiciona no arquivo 1
+                for (Imdb c : moviesTemp) {
+                    arq1.writeByte(0);
+                    arq1.writeInt(c.toByteArray().length);
+                    arq1.write(c.toByteArray());
+                }
+            } else { // Se o contador for par adiciona no arquivo 2
+                for (Imdb c : moviesTemp) {
+                    arq2.writeByte(0);
+                    arq2.writeInt(c.toByteArray().length);
+                    arq2.write(c.toByteArray());
+                }
             }
-        } else { // Se o contador for par adiciona no arquivo 2
-            for (Imdb c : moviesTemp) {
-                arq2.writeByte(0);
-                arq2.writeInt(c.toByteArray().length);
-                arq2.write(c.toByteArray());
-            }
+
+            moviesTemp.clear(); // Limpa o array temporário
         }
-
-        moviesTemp.clear(); // Limpa o array temporário
-
         System.out.println("\nArquivo 1: ");
-        printFile(arq1);
-        // System.out.println("\nArquivo 2: ");
-        // printFile(arq2);
+        printFile2(arq1);
+        System.out.println("\nArquivo 2: ");
+        printFile2(arq2);
         raf.close();
         return true;
+    }
+
+    // --------------------------------------------------------------------------//
+    public static void movieSort(ArrayList<Imdb> moviesTemp) {
+        quicksort(0, moviesTemp.size() - 1, moviesTemp);
+    }
+
+    public static void quicksort(int esq, int dir, ArrayList<Imdb> moviesTemp) {
+        int i = esq, j = dir;
+        int pivo = moviesTemp.get((dir + esq) / 2).getRanking();
+        while (i <= j) {
+            while (moviesTemp.get(i).getRanking() < pivo)
+                i++;
+            while (moviesTemp.get(j).getRanking() > pivo)
+                j--;
+            if (i <= j) {
+                // swap
+                Imdb temp = moviesTemp.get(i);
+                moviesTemp.set(i, moviesTemp.get(j));
+                moviesTemp.set(j, temp);
+                i++;
+                j--;
+            }
+        }
+        if (esq < j)
+            quicksort(esq, j, moviesTemp);
+        if (i < dir)
+            quicksort(i, dir, moviesTemp);
     }
 }
